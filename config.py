@@ -41,7 +41,7 @@ def configure(keymap):
         keymap_global["O-RShift"] = "Space"
 
     # 無変換と変換、Ctrl+SpaceでIMEのON/OFF切り替え
-    if 1:
+    if 0:
         def inputkanjikey():
             TIMEOUT=3000
             if(keymap.wnd.getImeStatus()):
@@ -53,6 +53,7 @@ def configure(keymap):
 
         keymap_global["LC-RShift"] = inputkanjikey
 
+    if 1:
         keymap_global["28"] = lambda:keymap.wnd.setImeStatus(1)
         keymap_global["29"] = lambda:keymap.wnd.setImeStatus(0)
 
