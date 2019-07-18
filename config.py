@@ -33,10 +33,11 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
 
+    keymap_global = keymap.defineWindowKeymap()
+
     # keyhac で SandS
     # https://mobitan.hateblo.jp/entry/20081128/1227792452
-    if 1:
-        keymap_global = keymap.defineWindowKeymap()
+    if 0:
         keymap.replaceKey("Space", "RShift")
         keymap_global["O-RShift"] = "Space"
 
@@ -53,9 +54,13 @@ def configure(keymap):
 
         keymap_global["LC-RShift"] = inputkanjikey
 
-    if 1:
+    if 0:
         keymap_global["28"] = lambda:keymap.wnd.setImeStatus(1)
         keymap_global["29"] = lambda:keymap.wnd.setImeStatus(0)
+
+    if 1:
+        keymap.replaceKey("28", "RShift")
+        keymap.replaceKey("29", "LShift")
 
     # ひらがなキーでIMEの切り替え
     if 1:
