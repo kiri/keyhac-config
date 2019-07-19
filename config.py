@@ -34,6 +34,9 @@ def configure(keymap):
     # --------------------------------------------------------------------
 
     keymap_global = keymap.defineWindowKeymap()
+    
+    # クリップボード監視を無効
+    keymap.clipboard_history.enableHook(False)
 
     # keyhac で SandS
     # https://mobitan.hateblo.jp/entry/20081128/1227792452
@@ -62,9 +65,77 @@ def configure(keymap):
         keymap.replaceKey("28", "RShift")
         keymap.replaceKey("29", "LShift")
 
-    # ひらがなキーでIMEの切り替え
+    # ひらがなキーで入力方法の切り替え
     if 1:
         keymap_global["242"] = "LW-Space"
+
+    # --------------------------------------------------------------------
+    
+    ## IMEを切り替える
+    #
+    #  @param flag      切り替えフラグ（True:IME ON / False:IME OFF）
+    #
+    def switch_ime(flag):
+
+        # バルーンヘルプを表示する時間(ミリ秒)
+        BALLOON_TIMEOUT_MSEC = 500
+
+        # if not flag:
+        if flag:
+            ime_status = 1
+            message = u"[あ]"
+        else:
+            ime_status = 0
+            message = u"[_A]"
+
+        # IMEのON/OFFをセット
+        keymap.wnd.setImeStatus(ime_status)
+        # IMEの状態をバルーンヘルプで表示
+        #keymap.popBalloon("ime_status", message, BALLOON_TIMEOUT_MSEC)
+
+    ## キーの1回/2回押しで引数の関数コールを切り替える
+    #
+    #  @param func      コールする関数
+    #
+    #  引数の func は1回押しなら func(True)、2回連続押しなら func(False)
+    #  でコールされる
+    #
+    def double_key(func, cache_t={}):
+
+        # 2回連続押し判断の許容間隔(ミリ秒)
+        TIMEOUT_MSEC = 500
+
+        func_name = func.__name__
+
+        # 前回時刻
+        t0 = 0
+        if func_name in cache_t:
+            t0 = cache_t[func_name]
+        # 現在時刻を保存
+        import time
+        cache_t[func_name] = time.clock()
+        # 前回実行からの経過時間(ミリ秒)
+        delta_t = (cache_t[func_name] - t0) * 1000
+
+        # 関数コール
+        if delta_t > TIMEOUT_MSEC:
+            func(False)     # 1回押し
+        else:
+            func(True)      # 2回連続押し
+
+    if 1:   # [半角／全角]
+        keymap_global["U-(243)"] = lambda: double_key(switch_ime)  # 押す
+        keymap_global["D-(243)"] = lambda: None                    # 離す
+        keymap_global["U-(244)"] = lambda: double_key(switch_ime)  # 押す
+        keymap_global["D-(244)"] = lambda: None                    # 離す
+
+    if 0:   # [変換]
+        keymap_global["S-(28)"] = "(28)"            # Shift+[変換]で再変換
+        keymap_global["(28)"] = lambda: double_key(switch_ime)
+
+    if 0:   # [無変換]
+        keymap_global["(29)"] = lambda: double_key(switch_ime)
+
 
     # --------------------------------------------------------------------
 
@@ -306,7 +377,7 @@ def configure(keymap):
 
 
     # Customizing clipboard history list
-    if 1:
+    if 0:
         # Enable clipboard monitoring hook (Default:Enabled)
         keymap.clipboard_history.enableHook(True)
 
