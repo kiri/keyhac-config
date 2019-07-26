@@ -57,11 +57,11 @@ def configure(keymap):
 
         keymap_global["LC-RShift"] = inputkanjikey
 
-    if 0:
+    if 1:
         keymap_global["28"] = lambda:keymap.wnd.setImeStatus(1)
         keymap_global["29"] = lambda:keymap.wnd.setImeStatus(0)
 
-    if 1:
+    if 0:
         keymap.replaceKey("28", "RShift")
         keymap.replaceKey("29", "LShift")
 
@@ -123,7 +123,7 @@ def configure(keymap):
         else:
             func(True)      # 2回連続押し
 
-    if 1:   # [半角／全角]
+    if 0:   # [半角／全角]
         keymap_global["U-(243)"] = lambda: double_key(switch_ime)  # 押す
         keymap_global["D-(243)"] = lambda: None                    # 離す
         keymap_global["U-(244)"] = lambda: double_key(switch_ime)  # 押す
