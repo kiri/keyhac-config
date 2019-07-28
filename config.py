@@ -13,8 +13,8 @@ def configure(keymap):
 
     # Setting with program file path (Simple usage)
     if 1:
-        keymap.editor = "gvim.exe"
-        #keymap.editor = "notepad.exe"
+        #keymap.editor = "gvim.exe"
+        keymap.editor = "notepad.exe"
 
     # Setting with callable object (Advanced usage)
     if 0:
@@ -66,7 +66,7 @@ def configure(keymap):
         keymap.replaceKey("29", "LShift")
 
     # ひらがなキーで入力方法の切り替え
-    if 1:
+    if 0:
         keymap_global["242"] = "LW-Space"
 
     # --------------------------------------------------------------------
